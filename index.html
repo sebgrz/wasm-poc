@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head></head>
+  <body>
+    <script type="module">
+      (async() => {
+        const response = await fetch('add.wasm');
+        const bytes = await response.arrayBuffer();
+        const { instance } = await WebAssembly.instantiate(bytes);
+        
+        document.getElementById('result').innerText = instance.exports.add(1, 2);
+      })();
+    </script>
+    <div id="result"></div>
+  </body>
+</html>
