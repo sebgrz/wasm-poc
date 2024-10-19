@@ -3,14 +3,46 @@
   <head></head>
   <body>
     <script type="module">
+      const fps = 30;
       (async() => {
-        const response = await fetch('add.wasm');
-        const bytes = await response.arrayBuffer();
-        const { instance } = await WebAssembly.instantiate(bytes);
+        var fpsInterval = 1000 / fps;
+        var then = Date.now();
+
+        var { instance } = await WebAssembly.instantiateStreaming(fetch('add.wasm'), {});
         
         document.getElementById('result').innerText = instance.exports.add(1, 2);
+        const canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+
+        canvas.width = 600;
+        canvas.height = 600;
+
+        const image = new ImageData(
+          new Uint8ClampedArray(
+            instance.exports.memory.buffer,
+            instance.exports.ImageBuffer.value,
+            4 * canvas.width * canvas.height
+          ), canvas.width
+        );
+
+
+        window.requestAnimationFrame(run);
+        function run() {
+          let now = Date.now();
+          let elapsed = now - then;
+          
+          if (elapsed > fpsInterval) {
+            then = now - (elapsed % fpsInterval);
+            instance.exports.draw();
+            ctx.putImageData(image, 0, 0);
+            console.log('update');
+          }
+          window.requestAnimationFrame(run);
+        }
       })();
+
     </script>
     <div id="result"></div>
+    <canvas id="canvas"></canvas>
   </body>
 </html>
