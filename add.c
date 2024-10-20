@@ -1,5 +1,5 @@
-const unsigned int WIDTH = 600;
-const unsigned int HEIGHT = 600;
+const unsigned int WIDTH = 1000;
+const unsigned int HEIGHT = 325;
 
 unsigned int iteration = 0;
 unsigned int ImageBuffer[WIDTH * HEIGHT];
@@ -15,7 +15,7 @@ void draw() {
     for (y = 0; y < HEIGHT; y++) {
       int pixelColor = ((x * y + color) % 300);
       unsigned int c = rgb(pixelColor, 0, 0);
-      ImageBuffer[WIDTH * x + y] = c;
+      ImageBuffer[x + y * HEIGHT] = c;
     }
   }
 
