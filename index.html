@@ -33,9 +33,8 @@
           
           if (elapsed > fpsInterval) {
             then = now - (elapsed % fpsInterval);
-            instance.exports.draw();
+            instance.exports.drawImage();
             ctx.putImageData(image, 0, 0);
-            console.log('update');
           }
           window.requestAnimationFrame(run);
         }

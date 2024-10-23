@@ -1,3 +1,5 @@
+#include "data.h"
+
 const unsigned int WIDTH = 1000;
 const unsigned int HEIGHT = 325;
 
@@ -20,6 +22,19 @@ void draw() {
   }
 
   iteration++;
+}
+
+void drawImage() {
+  int x, y = 0;
+  int position = 0;
+  for (x = 0; x < WIDTH; x++) {
+    for (y = 0; y < HEIGHT; y++) {
+      ImageBuffer[x * HEIGHT + y] = (data[position + 3] << 24) +
+                                    (data[position + 2] << 16) +
+                                    (data[position + 1] << 8) + data[position];
+      position += 4;
+    }
+  }
 }
 
 unsigned int rgb(int r, int g, int b) {
